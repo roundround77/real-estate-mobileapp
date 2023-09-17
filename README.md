@@ -10,8 +10,6 @@ Welcome to MyPropertyApp! This is a comprehensive mobile application for real es
 3. [Tech Stack](#tech-stack)
 4. [Installation](#installation)
 5. [Usage](#usage)
-6. [Contributing](#contributing)
-7. [License](#license)
 
 ## Introduction
 
