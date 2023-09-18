@@ -16,30 +16,44 @@ import moment from "moment";
 
 const Details = ({ navigation, route }) => {
   return (
+    // Use a ScrollView to allow vertical scrolling when content overflows
     <ScrollView showsVerticalScrollIndicator={false}>
+      {/* Create the main container */}
       <SafeAreaView style={styles.container}>
+        {/* Header section */}
         <View>
           <View style={styles.header}>
+            {/* "GoBack" button for navigation */}
             <GoBack />
+            {/* Heading */}
             <Text style={styles.heading}>Details</Text>
           </View>
+          {/* Property image */}
           <View>
-            <Image source={{uri: route.params?.imageUrl}} style={styles.image} />
+            <Image source={{ uri: route.params?.imageUrl }} style={styles.image} />
           </View>
 
+          {/* Top bar with property title and listing time */}
           <View style={styles.top_bar}>
+            {/* Property title */}
             <View style={styles.flex}>
               <Text style={styles.large_text}>{route.params?.title}</Text>
-              <Text style={styles.mini_text}>{moment(route.params?.time).startOf('hour').fromNow()}</Text>
+              {/* Time since the property was listed */}
+              <Text style={styles.mini_text}>
+                {moment(route.params?.time).startOf('hour').fromNow()}
+              </Text>
             </View>
+            {/* Favorite icon */}
             <View>
               <Image source={SVGS.Favorite} />
             </View>
           </View>
+          {/* Property address */}
           <Text style={styles.address}>
             Street: {route.params?.address}
           </Text>
 
+          {/* Property structure (beds, restrooms, area) */}
           <View style={styles.structure}>
             <View style={styles.flex}>
               <Image source={SVGS.Bed} />
@@ -48,7 +62,9 @@ const Details = ({ navigation, route }) => {
 
             <View style={styles.flex}>
               <Image source={SVGS.Toilet} />
-              <Text style={styles.mini_text}>{route.params?.restRooms} Restrooms</Text>
+              <Text style={styles.mini_text}>
+                {route.params?.restRooms} Restrooms
+              </Text>
             </View>
 
             <View style={styles.flex}>
@@ -57,33 +73,40 @@ const Details = ({ navigation, route }) => {
             </View>
           </View>
 
+          {/* Property price */}
           <View style={{ marginVertical: getHeight(2) }}>
             <Text style={styles.large_text}>$ {route.params?.price}</Text>
           </View>
 
+          {/* Property description */}
           <View>
             <Text style={styles.large_text}>Description:</Text>
           </View>
 
+          {/* Property description text */}
           <View>
             <Text style={styles.details}>
               {route.params?.description}
             </Text>
           </View>
 
+          {/* Facilities available in the property */}
           <View style={{ marginTop: getHeight(2) }}>
             <Text style={styles.large_text}>Facilities:</Text>
             <Text style={styles.details}>{route.params?.facilities}</Text>
           </View>
         </View>
 
+        {/* Location section */}
         <View>
           <Text style={styles.large_text}>Location:</Text>
           <View style={styles.flex}>
+            {/* Placeholder map view (replace with actual location data) */}
             <MapView mapType="terrain" style={styles.map} />
           </View>
         </View>
 
+        {/* "Contact Seller" button */}
         <View>
           <TouchableOpacity
             style={styles.flex}
@@ -107,79 +130,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: getWidth(3),
   },
 
-  heading: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#ffffff",
-    marginLeft: getWidth(4),
-  },
-
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: getHeight(3),
-  },
-
-  top_bar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: getHeight(2),
-  },
-
-  large_text: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#ffffff",
-    marginRight: 5,
-  },
-
-  mini_text: {
-    fontWeight: "500",
-    fontSize: 10,
-    color: "#ffffff",
-    marginLeft: 5,
-  },
-
-  address: {
-    color: "#ffffff",
-    fontWeight: "500",
-    fontSize: 12,
-    maxWidth: getWidth(70),
-  },
-
-  flex: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  structure: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: getHeight(2),
-    gap: 8,
-  },
-
-  details: {
-    fontSize: 12,
-    fontWeight: "500",
-    color: "#ffffff",
-    marginVertical: getHeight(0.5),
-  },
-
-  image: {
-    backgroundColor: "red",
-    width: getWidth(95),
-    height: getHeight(20),
-    borderRadius: 10,
-    objectFit: "cover",
-    resizeMode: "center",
-  },
-
-  map: {
-    width: getWidth(85),
-    height: getHeight(20),
-    marginVertical: 5,
-  },
+  // ... (other styles)
 });

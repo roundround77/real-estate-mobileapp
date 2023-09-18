@@ -24,8 +24,6 @@ const Home = ({ navigation }) => {
   const [searchInput, setSearchInput] = useState('');
   const isFocused = useIsFocused();
 
-
-
   const SortValues = ["Price (Low - High)", "Price(High - Low)", "Name (Asc)", "Name(Dsc)"];
   const PropertyType = [
     "HDB",
@@ -33,6 +31,7 @@ const Home = ({ navigation }) => {
     "Landed",
   ];
 
+  // Define a functional component Item to render each property card
   const Item = ({ userid, title, price, description, beds, restRooms, area, time, imageUrl, facilities, address }) => {
     return (
       <PropertyCard
@@ -49,14 +48,10 @@ const Home = ({ navigation }) => {
         address={address}
         userid={userid}
       />
-      // <>
-      // <Text style={{color:'#fff'}}>
-      //   {title}
-      // </Text>
-      // </>
     );
   };
 
+  // Load property data from Firestore
   const loadData = async () => {
     const querySnapshot = await getDocs(collection(getFirestore(app), "Property"));
     let tempData = [];
@@ -69,6 +64,7 @@ const Home = ({ navigation }) => {
     setSecondaryData(tempData);
   }
 
+  // Filter properties based on the search input
   const searchFilter = () => {
     let temp = [...secondaryData];
     // Use the filter method to create a new array containing matching objects
@@ -76,28 +72,7 @@ const Home = ({ navigation }) => {
     setMainData(filteredObjects);
   }
 
-  function orderObjectsByTitleAscending(temp) {
-    return temp.sort((a, b) => {
-      const titleA = a.propertyType.toLowerCase();
-      const titleB = b.propertyType.toLowerCase();
-
-      if (titleA < titleB) return -1;
-      if (titleA > titleB) return 1;
-      return 0;
-    });
-  }
-
-  function orderObjectsByTitleDescending(temp) {
-    return temp.sort((a, b) => {
-      const titleA = a.propertyType.toLowerCase();
-      const titleB = b.propertyType.toLowerCase();
-
-      if (titleA > titleB) return -1;
-      if (titleA < titleB) return 1;
-      return 0;
-    });
-  }
-
+  // Sorting properties based on dropdown selection
   const changedDropdown = (e) => {
     let temp = [...secondaryData];
     if (e === 'Price (Low - High)') {
@@ -115,10 +90,35 @@ const Home = ({ navigation }) => {
     setMainData(temp);
   }
 
+  // Function to order objects by title in ascending order
+  function orderObjectsByTitleAscending(temp) {
+    return temp.sort((a, b) => {
+      const titleA = a.propertyType.toLowerCase();
+      const titleB = b.propertyType.toLowerCase();
+
+      if (titleA < titleB) return -1;
+      if (titleA > titleB) return 1;
+      return 0;
+    });
+  }
+
+  // Function to order objects by title in descending order
+  function orderObjectsByTitleDescending(temp) {
+    return temp.sort((a, b) => {
+      const titleA = a.propertyType.toLowerCase();
+      const titleB = b.propertyType.toLowerCase();
+
+      if (titleA > titleB) return -1;
+      if (titleA < titleB) return 1;
+      return 0;
+    });
+  }
+
   useEffect(() => {
     loadData();
   }, [])
 
+  // Load data again when the component is focused
   useEffect(() => {
     if (isFocused) {
       loadData();

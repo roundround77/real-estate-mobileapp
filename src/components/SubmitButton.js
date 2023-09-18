@@ -1,12 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, ActivityIndicatorBase, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
-const SubmitButton = ({ title, onPress, loading=false }) => {
+const SubmitButton = ({ title, onPress, loading = false }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       {loading ? (
+        // Display an ActivityIndicator if 'loading' prop is true
         <ActivityIndicator color="#000" />
       ) : (
+        // Display the button title if 'loading' prop is false
         <Text style={styles.title}>{title}</Text>
       )}
     </TouchableOpacity>
@@ -15,6 +17,7 @@ const SubmitButton = ({ title, onPress, loading=false }) => {
 
 export default SubmitButton;
 
+// Styles for the SubmitButton component
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#DDFE71",

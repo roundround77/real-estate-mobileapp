@@ -17,43 +17,46 @@ import app from "../../firebaseConfig";
 const Favorites = (navigation) => {
   const [mainData, setMainData] = useState([]);
   const [secondaryData, setSecondaryData] = useState([]);
-  const Item = ({ title, price, description, beds, restRooms, area, time, imageUrl, facilities, address}) => {
+
+  // Define a functional component Item to render each property card
+  const Item = ({ title, price, description, beds, restRooms, area, time, imageUrl, facilities, address }) => {
     return (
       <PropertyCard
-      title={title}
-      price={price}
-      description={description}
-      beds={beds}
-      restRooms={restRooms}
-      area={area}
-      time={time}
-      navigation={navigation}
-      imageUrl={imageUrl}
-      facilities={facilities}
-      address={address}
+        title={title}
+        price={price}
+        description={description}
+        beds={beds}
+        restRooms={restRooms}
+        area={area}
+        time={time}
+        navigation={navigation}
+        imageUrl={imageUrl}
+        facilities={facilities}
+        address={address}
       />
     );
   };
 
+  // Load property data from Firestore
   const loadData = async () => {
     const querySnapshot = await getDocs(collection(getFirestore(app), "Property"));
     let tempData = [];
     querySnapshot.forEach((doc) => {
-      if(doc.data().time){
-        tempData.push(doc.data())
+      if (doc.data().time) {
+        tempData.push(doc.data());
       }
     });
     setMainData(tempData);
     setSecondaryData(tempData);
   }
 
+  // Load property data when the component mounts
   useEffect(() => {
     loadData();
-  } ,[])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView> */}
       <View>
         <View style={styles.header}>
           <GoBack />
@@ -71,22 +74,21 @@ const Favorites = (navigation) => {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <Item
-              title={item?.propertyType}
-              price={item?.price}
-              description={item?.description}
-              beds={item?.restRooms}
-              restRooms={item?.restRooms}
-              area={item?.area}
-              time={item?.time}
-              imageUrl={item?.picture}
-              facilities={item?.facilities}
-              address={item?.address}
+                title={item?.propertyType}
+                price={item?.price}
+                description={item?.description}
+                beds={item?.restRooms}
+                restRooms={item?.restRooms}
+                area={item?.area}
+                time={item?.time}
+                imageUrl={item?.picture}
+                facilities={item?.facilities}
+                address={item?.address}
               />
             )}
           />
         </View>
       </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

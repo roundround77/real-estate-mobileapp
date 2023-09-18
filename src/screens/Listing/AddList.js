@@ -1,19 +1,18 @@
 import * as yup from "yup";
 import React, { useState } from "react";
 import GoBack from "../../components/GoBack";
-import * as ImagePicker from "expo-image-picker";
-import { getHeight, getWidth } from "../../helpers";
+import * as ImagePicker from "expo-image-picker";  // Import image picker from Expo
+import { getHeight, getWidth } from "../../helpers";  // Import helper functions for dimensions
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import { SubmitButton, Input, DropDown, SelectImage } from "../../components";
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";  // Import Firestore functions
 import app from "../../../firebaseConfig"; // Import the Firebase app you configured
-import { showMessage } from "react-native-flash-message";
-import { connect, useSelector } from "react-redux";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import moment from "moment";
-
+import { showMessage } from "react-native-flash-message";  // Import flash message library for notifications
+import { connect, useSelector } from "react-redux";  // Import Redux functions
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";  // Import Firebase Storage functions
+import moment from "moment";  // Import Moment.js for date and time handling
 
 const schema = yup.object({
   propertyName: yup.string(),
@@ -74,10 +73,10 @@ const AddList = (props) => {
           favoritesBy: [],
           location: '',
           picture: url,
-          time: moment().format(),
+          time: moment().format(),  // Format the current date and time
         });
         showMessage({
-          message: "Property Added SuccessFully ",
+          message: "Property Added Successfully ",
           type: "success",
         });
         setloading(false);
@@ -312,7 +311,7 @@ const AddList = (props) => {
 
           <View style={styles.flex}>
             <SelectImage uri={image} onPress={pickImage} />
-             </View>
+          </View>
 
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <SubmitButton

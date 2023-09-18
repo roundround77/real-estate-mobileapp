@@ -160,6 +160,7 @@ const SignUp = ({ navigation }) => {
 
 export default SignUp;
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#070707",

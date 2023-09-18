@@ -1,6 +1,7 @@
-import React from "react";
-import GoBack from "../components/GoBack";
-import { getHeight, getWidth } from "../helpers";
+// Import necessary modules and components
+import React from "react"; // Import React library
+import GoBack from "../components/GoBack"; // Import custom "GoBack" component
+import { getHeight, getWidth } from "../helpers"; // Import helper functions for responsive design
 import {
   StyleSheet,
   Text,
@@ -8,15 +9,20 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
-} from "react-native";
-import { Notifications_Data } from "../helpers/mock";
+} from "react-native"; // Import components and styles from React Native
+import { Notifications_Data } from "../helpers/mock"; // Import mock data for notifications
 
+// Define the Notifications component
 const Notifications = () => {
+  // Define a functional component called "Item" to render each notification item
   const Item = ({ title }) => {
     return (
       <>
+        {/* Render each notification item within a border */}
         <View style={styles.border}>
+          {/* Display the notification title */}
           <Text style={styles.text}>{title}</Text>
+          {/* Create a "View" button within a TouchableOpacity for future functionality */}
           <TouchableOpacity onPress={() => {}}>
             <Text style={styles.view}>View</Text>
           </TouchableOpacity>
@@ -28,15 +34,17 @@ const Notifications = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
+        {/* Header section containing a "GoBack" component and a heading */}
         <View style={styles.header}>
-          <GoBack />
-          <Text style={styles.heading}>Notifications</Text>
+          <GoBack /> {/* "GoBack" component for navigating back */}
+          <Text style={styles.heading}>Notifications</Text> {/* Heading text */}
         </View>
         <View>
+          {/* FlatList to display the list of notifications */}
           <FlatList
-            data={Notifications_Data}
-            renderItem={({ item }) => <Item title={item.title} />}
-            keyExtractor={(item) => item.id}
+            data={Notifications_Data} // Data source (notification items)
+            renderItem={({ item }) => <Item title={item.title} />} // Render each item using the "Item" component
+            keyExtractor={(item) => item.id} // Unique key extractor for each notification
           />
         </View>
       </View>
@@ -44,8 +52,9 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default Notifications; // Export the Notifications component as the default export
 
+// Define styles using StyleSheet.create
 const styles = StyleSheet.create({
   container: {
     flex: 1,

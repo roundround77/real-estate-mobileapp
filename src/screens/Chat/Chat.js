@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AvatarGenerator } from 'random-avatar-generator';
-import { getHeight, getWidth } from "../../helpers";
-import { useIsFocused } from '@react-navigation/native';
-import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase/firestore";
-import app from "../../../firebaseConfig";
+import { AvatarGenerator } from 'random-avatar-generator';  // Import avatar generator library
+import { getHeight, getWidth } from "../../helpers";  // Import helper functions for dimensions
+import { useIsFocused } from '@react-navigation/native';  // Import hook for checking if the screen is focused
+import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase/firestore";  // Import Firestore functions
+import app from "../../../firebaseConfig"; // Import the Firebase app you configured
 import {
   FlatList,
   SafeAreaView,
@@ -12,8 +12,8 @@ import {
   TouchableOpacity,
   View,
   Image
-} from "react-native";
-import { useSelector } from "react-redux";
+} from "react-native";  // Import React Native components
+import { useSelector } from "react-redux";  // Import Redux selector
 import {
   getDatabase,
   get,
@@ -22,22 +22,24 @@ import {
   onValue,
   push,
   update,
-} from 'firebase/database';
-import { async } from "@firebase/util";
-const generator = new AvatarGenerator();
+} from 'firebase/database';  // Import Firebase Realtime Database functions
+import { async } from "@firebase/util";  // Import Firebase async utility
+const generator = new AvatarGenerator();  // Create an instance of the avatar generator
 
 const Chat = ({ navigation, route }) => {
-  const { user } = useSelector((state) => state.user);
-  const [myData, setMyData] = useState(null);
-  const [redirecting, setRedirecting] = useState(false);
-  const isFocused = useIsFocused();
+  const { user } = useSelector((state) => state.user);  // Get user data from Redux store
+  const [myData, setMyData] = useState(null);  // State variable for user data
+  const [redirecting, setRedirecting] = useState(false);  // State variable for redirection
+  const isFocused = useIsFocused();  // Check if the screen is focused
 
+  // Function to find a user by their name in the Realtime Database
   const findUser = async name => {
     const database = getDatabase();
     const mySnapshot = await get(ref(database, `users/${name}`));
     return mySnapshot.val();
   };
 
+  // Function to load data based on the current route and screen focus
   const loadData = async () => {
     if (route.params && route.params.userid) {
       checkOrAddNewFriend(route.params.userid)
@@ -47,11 +49,12 @@ const Chat = ({ navigation, route }) => {
     }
   }
 
+  // Function to display a chat with a friend
   const displayChat = async (friend) => {
     navigation.navigate("SingleChat", { selectedUser: friend, myData: myData });
   }
 
-
+  // Function to get or create a chat for the current user
   const getOrCreatChaiter = async (user) => {
     const database = getDatabase();
     const myChat = await findUser(user.id);
@@ -70,11 +73,11 @@ const Chat = ({ navigation, route }) => {
     }
   }
 
-
+  // Function to get or create a chat with a friend
   const getOrCreatChat = async (myData, friend) => {
     const database = getDatabase();
     if (friend._id === myData._id) {
-      // don't let friend add himself
+      // Don't allow a friend to add themselves
       return;
     }
 
@@ -85,7 +88,7 @@ const Chat = ({ navigation, route }) => {
       return;
     }
 
-    // create a chatroom and store the chatroom id
+    // Create a chatroom and store the chatroom id
     const newChatroomRef = await push(ref(database, 'chatrooms'), {
       firstUser: myData._id,
       secondUser: friend._id,
@@ -95,7 +98,7 @@ const Chat = ({ navigation, route }) => {
     const newChatroomId = newChatroomRef.key;
 
     const userFriends = friend.friends || [];
-    //join myself to this friend friend list
+    // Join myself to this friend's friend list
     await update(ref(database, `users/${friend._id}`), {
       friends: [
         ...userFriends,
@@ -118,7 +121,7 @@ const Chat = ({ navigation, route }) => {
         chatroomId: newChatroomId,
       },
     ];
-    //add this friend to my friend list
+    // Add this friend to my friend list
     await update(ref(database, `users/${myData._id}`), {
       friends: myNewFriends,
     });
@@ -139,6 +142,7 @@ const Chat = ({ navigation, route }) => {
     });
   }
 
+  // Function to check or add a new friend based on the user ID
   const checkOrAddNewFriend = async (userid) => {
     try {
       setRedirecting(true);
@@ -170,16 +174,17 @@ const Chat = ({ navigation, route }) => {
     loadData();
   }, [])
 
+  // Component to display a chat item
   const Item = ({ data }) => {
     return (
       <>
         <TouchableOpacity onPress={() => displayChat(data)}>
           <View style={styles.chat_box}>
             <View style={styles.chat_box1}>
-              {/* <Image
+              <Image
                 style={styles.image}
                 source={{ uri: data.avatar }}
-              /> */}
+              />
               <View>
                 <Text style={styles.title}>{data.username}</Text>
                 <Text style={styles.message}>{data._id}</Text>
@@ -210,13 +215,11 @@ const Chat = ({ navigation, route }) => {
                     <Item
                       data={item}
                     />
-
                   )}
                   keyExtractor={(item) => item._id}
                 /> : <Text style={styles.heading}>No Chats Found.</Text>
               : <Text style={styles.heading}>Loading...</Text>
         }
-
       </View>
     </SafeAreaView>
   );
